@@ -3,7 +3,7 @@ from st_files_connection import FilesConnection
 
 # Establish a connection to Google Cloud Storage (GCS)
 conn = st.experimental_connection("gcs", type=FilesConnection)
-
+conn
 # Define the path to your SQLite3 .db file in GCS
 db_file_path = "data-account-app/account_management_copy.db"
 
