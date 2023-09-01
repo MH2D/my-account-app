@@ -12,3 +12,5 @@ with conn.read(db_file_path) as file:
     # Perform actions with the file
     # For example, you can read its content or use it as a SQLite3 database
     file_content = file.read()
+
+file_content
