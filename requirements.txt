@@ -1,0 +1,10 @@
+altair
+numpy
+matplotlib
+pandas
+streamlit
+ipykernel
+plotly
+nbformat==5.9.2
+seaborn
+colormath

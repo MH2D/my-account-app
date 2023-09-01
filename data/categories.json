@@ -1,0 +1,38 @@
+{
+
+    "expenses":{
+        "Alimentation" : ["Courses", "repas travail", "virement compte commun"],
+        "Les pêchés du soir" : ["Kebab", "tabac", "bar", "restaurants", "boîte", "VTC"],
+        "Logement" : ["Loyer", "charges","énergies et eaux", "internet"],
+    "Transport" :[ "transports en commun", "vélo", "train", "avion", "covoiturage", "essence"],
+    "Entretien personnel" : ["sport", "culture", "santé", "bien-être du corps"],
+    "Autres" :[ "retraits", "Antarius", "inconnu"],
+    "Achats" : ["vêtement", "CE", "électronique", "photo", "maison", "cadeaux", "autres"],
+    "Vacances" : ["transport", "logement", "alimentation", "activités", "alcool", "autres"],   
+    "Épargne" : ["Épargne de précaution", "investissement", "Code", "Planche de surf"],
+    "Abonnements mensuels" : ["mobile", "musique", "film"],
+    "Frais": ["banque", "assurance", "amendes"]
+    },
+
+    "recettes":[
+        "Salaire",
+        "Virement parent",
+        "Remboursement",
+       "Ticket restaurants",
+        "Forfait mobilité",
+        "Autre"
+    ],
+    "primal_colors":{
+    "Logement" : ["#A93226", "#F2D7D5"],
+    "Alimentation" : ["#76448A", "#EBDEF0"],
+    "Transport" : ["#1F618D", "#D4E6F1"],
+    "Achats" : ["#148F77", "#D1F2EB"],
+    "Épargne" : ["#1E8449", "#D4EFDF"],
+    "Entretien personnel" : ["#B7950B", "#FCF3CF"],
+    "Abonnements mensuels" : ["#AF601A", "#FAE5D3"],
+    "Frais": ["#909497", "#F2F3F4"],
+    "Les pêchés du soir" : ["#283747", "#D6DBDF"],
+    "Vacances" : ["#5D4037", "#D7CCC8"],
+    "Autres" : ["#FBC02D", "#FFF9C4"]
+    }
+}
