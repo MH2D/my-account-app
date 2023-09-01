@@ -8,3 +8,6 @@ plotly
 nbformat==5.9.2
 seaborn
 colormath
+gcsfs==2023.6.0
+# Direct pypi install coming soon
+git+https://github.com/streamlit/files-connection
