@@ -9,5 +9,5 @@ nbformat==5.9.2
 seaborn
 colormath
 gcsfs==2023.6.0
-# Direct pypi install coming soon
+SQLAlchemy==1.4.0
 git+https://github.com/streamlit/files-connection
