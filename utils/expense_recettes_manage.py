@@ -21,7 +21,7 @@ def add_expense():
 
     # Add the new expense to the database
     if st.button("Add Expense"):
-        CONN, CURSOR = start_db(DB_NAME, DATA_PATH=DATA_PATH)
+        CONN, CURSOR = start_db(DB_NAME)
         CURSOR.execute('''
         INSERT INTO expenses (
             date, description, category, sub_category, amount
@@ -30,7 +30,7 @@ def add_expense():
         CONN.commit()
         st.success("Expense added successfully!")
 
-        CONN.close()
+        save_and_close_db(CONN, 'test.db')
 
 # Define a function to add new expenses
 def add_recette():
@@ -44,7 +44,7 @@ def add_recette():
 
     # Add the new expense to the database
     if st.button("Add recette"):
-        CONN, CURSOR = start_db(DB_NAME, DATA_PATH=DATA_PATH)
+        CONN, CURSOR = start_db(DB_NAME)
 
         CURSOR.execute('''
         INSERT INTO recettes (
@@ -53,13 +53,13 @@ def add_recette():
                         (recette_date, description, category, amount))
         CONN.commit()
         st.success("Expense added successfully!")
-        CONN.close()
+        save_and_close_db(CONN, 'test.db')
 
 
 # Define a function to view and delete expenses
 def view_and_delete_db(table_name):
     st.header("View Expenses and Delete")
-    CONN, CURSOR = start_db(DB_NAME, DATA_PATH=DATA_PATH)
+    CONN, CURSOR = start_db(DB_NAME)
 
     table_data, table_df = get_df_from_table(CONN, CURSOR, table_name, return_table_data=True)
     
@@ -90,7 +90,7 @@ def view_and_delete_db(table_name):
 
     else:
         st.info(f"No {table_name} recorded yet.")
-    CONN.close()
+    save_and_close_db(CONN, 'test.db')
 
 
 def update_table(updated_data, table_name, id_to_col_names, conn, cursor):
@@ -101,4 +101,4 @@ def update_table(updated_data, table_name, id_to_col_names, conn, cursor):
 
         query = f"UPDATE {table_name} SET {str_for_query} WHERE id = ?"
         cursor.execute(query, tuple_values)
-    conn.commit()
+    save_and_close_db(conn, 'test.db')

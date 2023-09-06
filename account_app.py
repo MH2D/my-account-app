@@ -1,33 +1,62 @@
 import streamlit as st
-from st_files_connection import FilesConnection
+from utils.global_utils import (
+    DATA_PATH,
+    CATEGORIES,
+    DB_NAME,
+    start_db,
+    save_and_close_db
+)
 
-# # Establish a connection to Google Cloud Storage (GCS)
-# conn = st.experimental_connection("gcs", type=FilesConnection)
-# df = conn.read("data_ugo/ugo_expenses.csv", input_format="csv", ttl=600)
+from utils.expense_recettes_manage import (
+    add_expense,
+    add_recette,
+    view_and_delete_db
+)
+from utils.first_dashboard import (
+    do_altair_overall,
+    plot_current_month
+)
 
-# st.write('Que passo')
-# # conn.write('data_ugo/ugo_exp_2.csv', df)
-# st.write('trop biennnn')
-# st.write(st.secrets.connections.gcs.testing)
 
-from google.cloud import storage
 
-# Replace these with your values
-project_id = st.secrets.connections.gcs.project_id
-bucket_name = "data-account-app"
-object_name = "account_management_copy.db"
 
-# Initialize a client
-client = storage.Client(project=project_id)
 
-# Get the bucket
-bucket = client.get_bucket(bucket_name)
 
-# Get the blob (object)
-blob = bucket.blob(object_name)
+# Main function to switch between pages
+def main():
+    st.title("Daily Spendings App")
 
-# Download the object's content as a string
-content = blob.download_as_text()
+    # Create a navigation menu
+    page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard"])
 
-# Print or process the content as needed
-content
+    if page == "Expenses":
+        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
+        with add_tab:
+            add_expense()
+
+        with modif_tab:
+            view_and_delete_db(table_name='expenses')
+
+
+    if page == "Recettes":
+        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
+        with add_tab:
+            add_recette()
+        
+        with modif_tab:
+            view_and_delete_db(table_name='recettes')
+
+    if page == "Dashboard":
+        overall, my_other = st.tabs(['Overall', 'My other'])
+        with overall:
+            do_altair_overall()
+            plot_current_month()
+        
+        with my_other:
+            # view_and_delete_db(table_name='recettes')
+            pass
+
+
+
+if __name__ == '__main__':
+    main()

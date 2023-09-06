@@ -8,7 +8,7 @@ import seaborn as sns
 import datetime as dt
 from utils.global_utils import *
 
-CONN, CURSOR = start_db(DB_NAME, DATA_PATH=DATA_PATH)
+CONN, CURSOR = start_db(DB_NAME)
 expense_df =  get_df_from_table(CONN, CURSOR, table_name='expenses')
 expense_df = expense_df.set_index('date')
 
@@ -17,7 +17,7 @@ recettes_df = recettes_df.set_index('date')
 
 def do_altair_overall(): 
 
-    CONN, CURSOR = start_db(DB_NAME, DATA_PATH=DATA_PATH)
+    CONN, CURSOR = start_db(DB_NAME)
     expense_df =  get_df_from_table(CONN, CURSOR, table_name='expenses')
     expense_df = expense_df.set_index('date')
 
@@ -54,7 +54,7 @@ def do_altair_overall():
 
 
 def plot_current_month():
-    CONN, CURSOR = start_db(DB_NAME, DATA_PATH=DATA_PATH)
+    CONN, CURSOR = start_db(DB_NAME)
     expense_df =  get_df_from_table(CONN, CURSOR, table_name='expenses')
     expense_df = expense_df.set_index('date')
 

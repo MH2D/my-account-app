@@ -7,19 +7,63 @@ import plotly.graph_objs as go
 import colorsys
 import seaborn as sns
 import numpy as np
+from google.cloud import storage
 
-
-DATA_PATH = Path('data')
+# Your service account key information as a dictionary
+service_account_info = {
+    "type": st.secrets.connections.gcs.type,
+    "project_id": st.secrets.connections.gcs.project_id,
+    "private_key_id": st.secrets.connections.gcs.private_key_id,
+    "private_key": st.secrets.connections.gcs.private_key,
+    "client_email": st.secrets.connections.gcs.client_email,
+    "client_id": st.secrets.connections.gcs.client_id,
+    "auth_uri": st.secrets.connections.gcs.auth_uri,
+    "token_uri": st.secrets.connections.gcs.token_uri,
+    "auth_provider_x509_cert_url": st.secrets.connections.gcs.auth_provider_x509_cert_url,
+    "client_x509_cert_url": st.secrets.connections.gcs.client_x509_cert_url
+}
+# Initialize a client with your service account info
+CLIENT = storage.Client.from_service_account_info(service_account_info)
+DATA_PATH = 'data'
 DB_NAME = 'account_management.db'
 with open(DATA_PATH / 'categories.json', 'r') as json_file:
     CATEGORIES = json.load(json_file)
 
-def start_db(db_name, DATA_PATH):
-    CONN = sqlite3.connect(DATA_PATH / db_name)
+def start_db(db_name):
+    # Replace these with your values
+    bucket_name = "data-account-app"
+
+    # Get the bucket
+    bucket = CLIENT.get_bucket(bucket_name)
+
+    # Get the blob (object) corresponding to the SQLite database file
+    blob = bucket.blob(db_name)
+
+    # Download the SQLite database file as bytes
+    db_file_bytes = blob.download_as_bytes()
+
+    # Open the SQLite database in memory (you can also specify a local file path)
+    CONN = sqlite3.connect(':memory:')
     CURSOR = CONN.cursor()
     return CONN, CURSOR
 
+def save_and_close_db(conn_in_memory, saved_db_name):
+    # Specify your GCS bucket and the name for the updated database file
+    bucket_name = "data-account-app"
+    db_name = "account_management_copy.db"
 
+    # Get the bucket
+    bucket = CLIENT.get_bucket(bucket_name)
+
+    # Create a blob (object) for the updated database
+    blob = bucket.blob(saved_db_name)
+
+    # Dump the in-memory database to a binary stream and upload it to GCS
+    with conn_in_memory:
+        with blob.open("w") as f:
+            for line in conn_in_memory.iterdump():
+                f.write(f"{line}\n")
+    conn_in_memory.close()
 
 def get_df_from_table(CONN, CURSOR, table_name, return_table_data=False):
     # Fetch column names from the database table
