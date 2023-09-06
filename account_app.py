@@ -13,7 +13,7 @@ from st_files_connection import FilesConnection
 from google.cloud import storage
 
 # Replace these with your values
-project_id = st.secrets.connections.gcsproject_id
+project_id = st.secrets.connections.gcs.project_id
 bucket_name = "data-account-app"
 object_name = "account_management_copy.db"
 
