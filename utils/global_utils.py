@@ -51,7 +51,7 @@ def start_db(db_name):
 def save_and_close_db(conn_in_memory, saved_db_name):
     # Specify your GCS bucket and the name for the updated database file
     bucket_name = "data-account-app"
-    db_name = "account_management_copy.db"
+    db_name = saved_db_name
 
     # Get the bucket
     bucket = CLIENT.get_bucket(bucket_name)
