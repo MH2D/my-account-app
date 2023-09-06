@@ -25,7 +25,7 @@ service_account_info = {
 # Initialize a client with your service account info
 CLIENT = storage.Client.from_service_account_info(service_account_info)
 DATA_PATH = Path('data')
-DB_NAME = 'account_management_copy.db'
+DB_NAME = 'account_management_test_2.db'
 
 with open(DATA_PATH / 'categories.json', 'r') as json_file:
     CATEGORIES = json.load(json_file)
