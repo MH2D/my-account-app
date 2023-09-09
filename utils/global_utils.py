@@ -73,8 +73,6 @@ def get_df_from_table(CONN, CURSOR, table_name, return_table_data=False):
     id_to_col_names = {col[0]: col[1] for col in column_data}
 
     # Fetch all expenses from the database
-    CURSOR.execute("SELECT * FROM *")
-    st.write(CURSOR.fetchall())
     CURSOR.execute(f"SELECT * FROM {table_name}")
     table_data = CURSOR.fetchall()
     table_df = pd.DataFrame(table_data, columns=id_to_col_names.values())
