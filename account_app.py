@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.global_utils import *
+from utils.global_utils import DATA_PATH
 
 from utils.expense_recettes_manage import *
 
