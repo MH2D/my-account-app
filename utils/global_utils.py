@@ -9,7 +9,8 @@ import seaborn as sns
 import numpy as np
 from google.cloud import storage
 from io import BytesIO
-from my_variables import *
+from utils.my_variables import *
+
 
 def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
     # Get the bucket
