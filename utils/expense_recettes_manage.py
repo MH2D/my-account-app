@@ -24,6 +24,8 @@ def add_expense():
 
     # Add the new expense to the database
     if st.button("Add Expense"):
+        expenses_df = read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
+        
         new_expense = {
             'id': expenses_df.id.max() + 1,
             'date': spending_date,
@@ -33,7 +35,6 @@ def add_expense():
             'amount': amount
         }
 
-        expenses_df = read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
         expenses_df.loc[len(expenses_df)] = new_expense
         write_csv_to_gcs(expenses_df, f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
         st.success("Expense added successfully!")
