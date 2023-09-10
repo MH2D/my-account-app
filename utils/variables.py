@@ -3,7 +3,6 @@ from pathlib import Path
 from google.cloud import storage
 import json 
 
-DB_NAME = "wtf"
 # Your service account key information as a dictionary
 service_account_info = {
     "type": st.secrets.connections.gcs.type,
