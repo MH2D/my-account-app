@@ -30,7 +30,7 @@ def login_page():
             st.error('Wrong username or password', icon="🚨")
         else:
             session_state.logged_in = True
-
+            st.write('Good Job !!')
 # Function to logout
 def logout():
     session_state.logged_in = False
