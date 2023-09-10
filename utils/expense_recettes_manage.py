@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from utils.variables import *
+
 from utils.global_utils import *
 
 
