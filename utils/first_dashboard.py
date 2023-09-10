@@ -19,14 +19,6 @@ recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
 
 
 def do_altair_overall(): 
-    expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
-    expense_df = expense_df.set_index('date')
-    expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
-
-    recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
-    recettes_df = recettes_df.set_index('date')
-    recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
-
     # Over time and category
     st.subheader("Expense over time")
     freq_to_name = {
@@ -57,13 +49,6 @@ def do_altair_overall():
 
 
 def plot_current_month():
-    expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
-    expense_df = expense_df.set_index('date')
-    expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
-
-    recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
-    recettes_df = recettes_df.set_index('date')
-    recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
 
     st.subheader("Monthly breakdown")
 
