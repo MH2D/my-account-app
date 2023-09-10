@@ -25,7 +25,7 @@ def add_expense():
     # Add the new expense to the database
     if st.button("Add Expense"):
         new_expense = {
-            'id': len(expenses_df.id.max()) + 1,
+            'id': expenses_df.id.max() + 1,
             'date': spending_date,
             'description': description,
             'category': selected_catego,
@@ -53,7 +53,7 @@ def add_recette():
     if st.button("Add recette"):
         recettes_df = read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
         new_expense = {
-            'id': len(recettes_df.id.max()) + 1,
+            'id': recettes_df.id.max() + 1,
             'date': recette_date,
             'description': description,
             'category': category,
