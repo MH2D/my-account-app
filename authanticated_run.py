@@ -12,7 +12,6 @@ def main():
 
     # Create a navigation menu
     page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard"])
-    st.sidebar.button("Logout", on_click=logout)
 
     if page == "Expenses":
         add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
