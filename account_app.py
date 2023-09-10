@@ -22,7 +22,7 @@ authenticator.login('Login', 'main')
 
 # if st.button('register'):
 try:
-    if authenticator.register_user('Register user', preauthorization=True):
+    if authenticator.register_user('Register user', preauthorization=False):
         st.success('User registered successfully')
         with open('data/configs.yaml', 'w') as file:
             yaml.dump(config, file, default_flow_style=False)
