@@ -9,17 +9,20 @@ import datetime as dt
 from utils.my_variables import *
 from utils.global_utils import *
 
-expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
-expense_df = expense_df.set_index('date')
-expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
+def get_expenses_recettes():
+    expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
+    expense_df = expense_df.set_index('date')
+    expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
 
-recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
-recettes_df = recettes_df.set_index('date')
-recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
-st.table(expense_df)
+    recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
+    recettes_df = recettes_df.set_index('date')
+    recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
+    return expense_df, recettes_df
 
 def do_altair_overall(): 
     # Over time and category
+    expense_df, _ = get_expenses_recettes()
+
     st.subheader("Expense over time")
     freq_to_name = {
         'Month': 'm',
@@ -49,7 +52,8 @@ def do_altair_overall():
 
 
 def plot_current_month():
-
+    
+    expense_df, recettes_df = get_expenses_recettes()
     st.subheader("Monthly breakdown")
 
     current_month = st.date_input("Date")
