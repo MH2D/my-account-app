@@ -75,7 +75,8 @@ def view_and_delete_db(table_name):
         if st.button(f"Delete Selected {table_name}"):
             with_deletion_data_df = data_df[~data_df.id.isin(data_to_delete)]
             write_csv_to_gcs(with_deletion_data_df, csv_filename)
-        st.table(with_deletion_data_df)
+            data_df = read_csv_from_gcs(csv_filename)
+        st.table(data_df)
 
     else:
         st.info(f"No {table_name} recorded yet.")
