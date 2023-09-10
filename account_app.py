@@ -3,6 +3,10 @@ from st_files_connection import FilesConnection
 from google.cloud import storage
 from pathlib import Path
 import sqlite3
+from io import BytesIO
+import io
+import csv
+import pandas as pd
 
 # Your service account key information as a dictionary
 service_account_info = {
@@ -21,7 +25,7 @@ service_account_info = {
 # Initialize a client with your service account info
 CLIENT = storage.Client.from_service_account_info(service_account_info)
 DATA_PATH = Path('data')
-DB_NAME = 'account_management_test_2.db'
+DB_NAME = 'ugo_expenses.csv'
 
 # Replace these with your values
 bucket_name = "data-account-app"
@@ -32,17 +36,7 @@ bucket = CLIENT.get_bucket(bucket_name)
 # Get the blob (object) corresponding to the SQLite database file
 blob = bucket.blob(DB_NAME)
 
-# Download the SQLite database file as bytes
-db_file_bytes = blob.download_as_bytes()
-
-# Open the SQLite database in memory (you can also specify a local file path)
-CONN = sqlite3.connect(':memory:')
-CURSOR = CONN.cursor()
-
-# Execute a query to get all table names
-CURSOR.execute("SELECT name FROM sqlite_master WHERE type='table';")
-
-# Fetch all the table names using fetchall()
-tables = CURSOR.fetchall()
-st.write(tables)
-
+# Read the CSV file directly into a DataFrame
+content = blob.download_as_string()
+df = pd.read_csv(BytesIO(content))
+st.write(df)
