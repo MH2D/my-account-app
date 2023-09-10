@@ -1,62 +1,45 @@
 import streamlit as st
-from utils.global_utils import (
-    DATA_PATH,
-    CATEGORIES,
-    DB_NAME,
-    start_db,
-    save_and_close_db
-)
+from st_files_connection import FilesConnection
+from google.cloud import storage
+from pathlib import Path
+import sqlite3
 
-from utils.expense_recettes_manage import (
-    add_expense,
-    add_recette,
-    view_and_delete_db
-)
-from utils.first_dashboard import (
-    do_altair_overall,
-    plot_current_month
-)
+# Your service account key information as a dictionary
+service_account_info = {
+    "type": st.secrets.connections.gcs.type,
+    "project_id": st.secrets.connections.gcs.project_id,
+    "private_key_id": st.secrets.connections.gcs.private_key_id,
+    "private_key": st.secrets.connections.gcs.private_key,
+    "client_email": st.secrets.connections.gcs.client_email,
+    "client_id": st.secrets.connections.gcs.client_id,
+    "auth_uri": st.secrets.connections.gcs.auth_uri,
+    "token_uri": st.secrets.connections.gcs.token_uri,
+    "auth_provider_x509_cert_url": st.secrets.connections.gcs.auth_provider_x509_cert_url,
+    "client_x509_cert_url": st.secrets.connections.gcs.client_x509_cert_url
+}
 
+# Initialize a client with your service account info
+CLIENT = storage.Client.from_service_account_info(service_account_info)
+DATA_PATH = Path('data')
+DB_NAME = 'account_management_test_2.db'
 
+# Replace these with your values
+bucket_name = "data-account-app"
 
+# Get the bucket
+bucket = CLIENT.get_bucket(bucket_name)
 
+# Get the blob (object) corresponding to the SQLite database file
+blob = bucket.blob(DB_NAME)
 
+# Download the SQLite database file as bytes
+db_file_bytes = blob.download_as_bytes()
 
-# Main function to switch between pages
-def main():
-    st.title("Daily Spendings App")
+# Open the SQLite database in memory (you can also specify a local file path)
+CONN = sqlite3.connect(':memory:')
+CURSOR = CONN.cursor()
 
-    # Create a navigation menu
-    page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard"])
+CURSOR.execute(f"SELECT * FROM expenses")
+table_data = CURSOR.fetchall()
+st.write(table_data)
 
-    if page == "Expenses":
-        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
-        with add_tab:
-            add_expense()
-
-        with modif_tab:
-            view_and_delete_db(table_name='expenses')
-
-
-    if page == "Recettes":
-        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
-        with add_tab:
-            add_recette()
-        
-        with modif_tab:
-            view_and_delete_db(table_name='recettes')
-
-    if page == "Dashboard":
-        overall, my_other = st.tabs(['Overall', 'My other'])
-        with overall:
-            do_altair_overall()
-            plot_current_month()
-        
-        with my_other:
-            # view_and_delete_db(table_name='recettes')
-            pass
-
-
-
-if __name__ == '__main__':
-    main()
