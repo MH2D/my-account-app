@@ -9,7 +9,7 @@ import seaborn as sns
 import numpy as np
 from google.cloud import storage
 from io import BytesIO
-from variables import *
+from my_variables import *
 
 def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
     # Get the bucket
@@ -41,7 +41,7 @@ def write_csv_to_gcs(to_save_df, saved_filename, bucket_name=BUCKET_NAME):
 # Convert RGB tuple to hexadecimal color code
 def rgb_to_hex(rgb):
     return "#{:02X}{:02X}{:02X}".format(int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255))
-    
+
 def hex_to_RGB(hex_str):
     """ #FFFFFF -> [255,255,255]"""
     #Pass 16 to the integer function for change of base

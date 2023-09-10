@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.variables import *
+from utils.my_variables import *
 from utils.global_utils import *
 from utils.expense_recettes_manage import *
 from utils.first_dashboard import *
