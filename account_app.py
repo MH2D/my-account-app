@@ -15,7 +15,7 @@ if st.button("Sign in"):
     except:
         error = True
 
-if error:      
-    st.error('Wrong username or password', icon="🚨")
-else:
-    app_run.main()
+    if error:      
+        st.error('Wrong username or password', icon="🚨")
+    else:
+        app_run.main()
