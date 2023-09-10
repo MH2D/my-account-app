@@ -21,9 +21,9 @@ authenticator = stauth.Authenticate(
 authenticator.login('Login', 'main')
 
 if st.session_state["authentication_status"]:
-    authenticator.logout('Logout', 'main', key='unique_key')
     depense_app.main()
-    
+    authenticator.logout('Logout', 'main', key='unique_key')
+
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
 
