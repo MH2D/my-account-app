@@ -39,7 +39,7 @@ def main():
     if not session_state.logged_in:
         login_page()
     else:
-        st.sidebar.button("Logout", on_click=logout)
+        # st.sidebar.button("Logout", on_click=logout)
         app_run.main()
 
 if __name__ == "__main__":
