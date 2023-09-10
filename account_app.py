@@ -20,7 +20,7 @@ authenticator = stauth.Authenticate(
 
 authenticator.login('Login', 'main')
 
-if st.button('register')
+if st.button('register'):
     try:
         if authenticator.register_user('Register user', preauthorization=True):
             st.success('User registered successfully')
