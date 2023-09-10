@@ -1,21 +1,7 @@
 import streamlit as st
-from utils.global_utils import (
-    DATA_PATH,
-    CATEGORIES,
-    DB_NAME,
-    start_db,
-    save_and_close_db
-)
-
-from utils.expense_recettes_manage import (
-    add_expense,
-    add_recette,
-    view_and_delete_db
-)
-from utils.first_dashboard import (
-    do_altair_overall,
-    plot_current_month
-)
+from utils.global_utils import *
+from utils.expense_recettes_manage import *
+from utils.first_dashboard import *
 
 
 
