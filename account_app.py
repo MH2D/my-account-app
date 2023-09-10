@@ -39,7 +39,10 @@ db_file_bytes = blob.download_as_bytes()
 CONN = sqlite3.connect(':memory:')
 CURSOR = CONN.cursor()
 
-CURSOR.execute(f"SELECT * FROM *")
-table_data = CURSOR.fetchall()
-st.write(table_data)
+# Execute a query to get all table names
+CURSOR.execute("SELECT name FROM sqlite_master WHERE type='table';")
+
+# Fetch all the table names using fetchall()
+tables = CURSOR.fetchall()
+st.write(tables)
 
