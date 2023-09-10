@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    jsmith:
+      email: ugo.muhi@gmail.com
+      name: Ugo Muhieddine
+      password: $2b$12$QzhrRLbHnmA2UsJCeMNy8eU.dpMlvmJSnpBio11yaOjLpiWlliZIe
+    rbriggs:
+      email: rbriggs@gmail.com
+      name: Rebecca Briggs
+      password: $2b$12$1z/ZbWYpKys3fFRul9nqDO3bd.BpR1XIudHB1vtCknKdwf6yG5HuK
+cookie:
+  expiry_days: 30
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - melsby@gmail.com

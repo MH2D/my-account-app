@@ -1,87 +1,18 @@
 
-# import streamlit as st
-# import authanticated_run as app_run
-
-# # Define a session state object
-# class SessionState:
-#     def __init__(self):
-#         self.logged_in = False
-
-# # Initialize the session state
-# session_state = SessionState()
-
-# # Create a login page
-# def login_page():
-#     username = st.text_input("Username", value="")
-
-#     pwd = st.text_input("Password", value="", type="password")
-
-#     if st.button("Sign in"):
-#         try:
-#             secret_pwd = st.secrets[username].password
-#             if secret_pwd == pwd:
-#                 error = False
-#             else:
-#                 error = True
-#         except:
-#             error = True
-
-#         if error:      
-#             st.error('Wrong username or password', icon="🚨")
-#         else:
-#             session_state.logged_in = True
-#             st.write('Good Job !!')
-# # Function to logout
-# def logout():
-#     session_state.logged_in = False
-
-# def main():
-#     if not session_state.logged_in:
-#         login_page()
-#     else:
-#         # st.sidebar.button("Logout", on_click=logout)
-#         app_run.main()
-
-# if __name__ == "__main__":
-#     main()
-
-
+import yaml
+from yaml.loader import SafeLoader
 import streamlit as st
+import streamlit_authenticator as stauth
 
-# Define a session state object
-class SessionState:
-    def __init__(self):
-        self.logged_in = False
+with open('data/config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# Initialize the session state
-session_state = SessionState()
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
 
-# Create a login page
-def login_page():
-    st.title("Login Page")
-    password = st.text_input("Password", type="password")
-    if password == "secret":
-        session_state.logged_in = True
-        st.success("Login successful!")
-    else:
-        st.warning("Incorrect password.")
-
-# Create a main page that requires login
-def main_page():
-    st.title("Main Page")
-    st.write("This is the main page.")
-    st.button("Logout", on_click=logout)
-
-# Function to logout
-def logout():
-    session_state.logged_in = False
-
-# Main application
-def main():
-    if not session_state.logged_in:
-        login_page()
-    else:
-        main_page()
-
-if __name__ == "__main__":
-    main()
+authenticator.login('Login', 'main')
