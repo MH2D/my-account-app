@@ -23,3 +23,4 @@ BUCKET_NAME = "data-account-app"
 USER_DEPENSES = 'ugo'
 with open(DATA_PATH / 'categories.json', 'r') as json_file:
     CATEGORIES = json.load(json_file)
+FRENCH_DATEFORMAT = "%Y-%m-%d"
