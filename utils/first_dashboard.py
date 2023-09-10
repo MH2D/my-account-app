@@ -6,7 +6,7 @@ import plotly.graph_objs as go
 import colorsys
 import seaborn as sns
 import datetime as dt
-from utils.variables import *
+from utils.my_variables import *
 from utils.global_utils import *
 
 expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
