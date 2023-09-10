@@ -39,7 +39,7 @@ db_file_bytes = blob.download_as_bytes()
 CONN = sqlite3.connect(':memory:')
 CURSOR = CONN.cursor()
 
-CURSOR.execute(f"SELECT * FROM expenses")
+CURSOR.execute(f"SELECT * FROM *")
 table_data = CURSOR.fetchall()
 st.write(table_data)
 
