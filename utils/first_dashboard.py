@@ -9,6 +9,7 @@ import datetime as dt
 from utils.my_variables import *
 from utils.global_utils import *
 
+@st.cache
 def get_expenses_recettes():
     expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
     expense_df = expense_df.set_index('date')
