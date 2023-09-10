@@ -8,6 +8,7 @@ import colorsys
 import seaborn as sns
 import numpy as np
 from google.cloud import storage
+from io import BytesIO
 
 # Your service account key information as a dictionary
 service_account_info = {
@@ -25,64 +26,36 @@ service_account_info = {
 # Initialize a client with your service account info
 CLIENT = storage.Client.from_service_account_info(service_account_info)
 DATA_PATH = Path('data')
-DB_NAME = 'account_management_test_2.db'
-
+BUCKET_NAME = "data-account-app"
+USER_DEPENSES = 'ugo'
 with open(DATA_PATH / 'categories.json', 'r') as json_file:
     CATEGORIES = json.load(json_file)
 
-def start_db(db_name):
-    # Replace these with your values
-    bucket_name = "data-account-app"
-
+def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
     # Get the bucket
     bucket = CLIENT.get_bucket(bucket_name)
 
     # Get the blob (object) corresponding to the SQLite database file
-    blob = bucket.blob(db_name)
+    blob = bucket.blob(csv_filename)
 
-    # Download the SQLite database file as bytes
-    db_file_bytes = blob.download_as_bytes()
+    # Read the CSV file directly into a DataFrame
+    content = blob.download_as_string()
+    csv_df = pd.read_csv(BytesIO(content))
 
-    # Open the SQLite database in memory (you can also specify a local file path)
-    CONN = sqlite3.connect(':memory:')
-    CURSOR = CONN.cursor()
-    return CONN, CURSOR
+    return csv_df
 
-def save_and_close_db(conn_in_memory, saved_db_name):
-    # Specify your GCS bucket and the name for the updated database file
-    bucket_name = "data-account-app"
-    db_name = saved_db_name
-
-    # Get the bucket
+def write_csv_to_gcs(to_save_df, saved_filename, bucket_name=BUCKET_NAME):
+    
+    csv_content = to_save_df.to_csv(index=False)
+    
+    # Define the blob (object) to write
     bucket = CLIENT.get_bucket(bucket_name)
 
-    # Create a blob (object) for the updated database
-    blob = bucket.blob(saved_db_name)
+    # Define the blob (object) to write
+    blob = bucket.blob(saved_filename)
 
-    # Dump the in-memory database to a binary stream and upload it to GCS
-    with conn_in_memory:
-        with blob.open("w") as f:
-            for line in conn_in_memory.iterdump():
-                f.write(f"{line}\n")
-    conn_in_memory.close()
-
-def get_df_from_table(CONN, CURSOR, table_name, return_table_data=False):
-    # Fetch column names from the database table
-    CURSOR.execute(f"PRAGMA table_info({table_name})")
-    column_data = CURSOR.fetchall()
-    id_to_col_names = {col[0]: col[1] for col in column_data}
-
-    # Fetch all expenses from the database
-    CURSOR.execute(f"SELECT * FROM {table_name}")
-    table_data = CURSOR.fetchall()
-    table_df = pd.DataFrame(table_data, columns=id_to_col_names.values())
-    table_df.date = pd.to_datetime(table_df.date, format='%Y-%m-%d')
-    table_df = table_df.sort_values(by=['date'])
-
-    if return_table_data:
-        return table_data, table_df
-    else:
-        return table_df
+    # Upload the CSV content to GCS
+    blob.upload_from_string(csv_content, content_type='text/csv')
 
 
 # Convert RGB tuple to hexadecimal color code
