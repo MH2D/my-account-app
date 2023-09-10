@@ -1,44 +1,20 @@
+
 import streamlit as st
 
 
-def is_authenticated(password):
-    return password == "admin"
+password = st.sidebar.text_input("Password:", value="")
 
+# select our text input field and make it into a password input
+js = "el = document.querySelectorAll('.sidebar-content input')[0]; el.type = 'password';"
 
-def generate_login_block():
-    block1 = st.empty()
-    block2 = st.empty()
+# passing js code to the onerror handler of an img tag with no src
+# triggers an error and allows automatically running our code
+html = f'<img src onerror="{js}">'
 
-    return block1, block2
+# in contrast to st.write, this seems to allow passing javascript
+div = Div(text=html)
+st.bokeh_chart(div)
 
-
-def clean_blocks(blocks):
-    for block in blocks:
-        block.empty()
-
-
-def login(blocks):
-    blocks[0].markdown("""
-            <style>
-                input {
-                    -webkit-text-security: disc;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-
-    return blocks[1].text_input('Password')
-
-
-def main():
-    st.header('Hello')
-    st.balloons()
-
-
-login_blocks = generate_login_block()
-password = login(login_blocks)
-
-if is_authenticated(password):
-    clean_blocks(login_blocks)
-    main()
-elif password:
-    st.info("Please enter a valid password")
+if password != os.environ["PASSWORD"]:
+    st.error("the password you entered is incorrect")
+    return
