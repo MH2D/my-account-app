@@ -8,20 +8,17 @@ import seaborn as sns
 import datetime as dt
 from utils.global_utils import *
 
-CONN, CURSOR = start_db(DB_NAME)
-expense_df =  get_df_from_table(CONN, CURSOR, table_name='expenses')
+expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
 expense_df = expense_df.set_index('date')
 
-recettes_df =  get_df_from_table(CONN, CURSOR, table_name='recettes')
+recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
 recettes_df = recettes_df.set_index('date')
 
 def do_altair_overall(): 
-
-    CONN, CURSOR = start_db(DB_NAME)
-    expense_df =  get_df_from_table(CONN, CURSOR, table_name='expenses')
+    expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
     expense_df = expense_df.set_index('date')
 
-    recettes_df =  get_df_from_table(CONN, CURSOR, table_name='recettes')
+    recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
     recettes_df = recettes_df.set_index('date')
 
     # Over time and category
@@ -54,11 +51,10 @@ def do_altair_overall():
 
 
 def plot_current_month():
-    CONN, CURSOR = start_db(DB_NAME)
-    expense_df =  get_df_from_table(CONN, CURSOR, table_name='expenses')
+    expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
     expense_df = expense_df.set_index('date')
 
-    recettes_df =  get_df_from_table(CONN, CURSOR, table_name='recettes')
+    recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
     recettes_df = recettes_df.set_index('date')
 
     st.subheader("Monthly breakdown")
@@ -111,9 +107,3 @@ def plot_current_month():
     #         hovermode='x unified'
     #         )
     st.plotly_chart(nested_pie_this_month, use_container_width=True)
-
-
-
-
-# def recettes_vs_expense():
-    

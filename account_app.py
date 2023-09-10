@@ -1,52 +1,62 @@
 import streamlit as st
-from st_files_connection import FilesConnection
-from google.cloud import storage
-from pathlib import Path
-import sqlite3
-from io import BytesIO
-import io
-import csv
-import pandas as pd
+from utils.global_utils import (
+    DATA_PATH,
+    CATEGORIES,
+    DB_NAME,
+    start_db,
+    save_and_close_db
+)
 
-# Your service account key information as a dictionary
-service_account_info = {
-    "type": st.secrets.connections.gcs.type,
-    "project_id": st.secrets.connections.gcs.project_id,
-    "private_key_id": st.secrets.connections.gcs.private_key_id,
-    "private_key": st.secrets.connections.gcs.private_key,
-    "client_email": st.secrets.connections.gcs.client_email,
-    "client_id": st.secrets.connections.gcs.client_id,
-    "auth_uri": st.secrets.connections.gcs.auth_uri,
-    "token_uri": st.secrets.connections.gcs.token_uri,
-    "auth_provider_x509_cert_url": st.secrets.connections.gcs.auth_provider_x509_cert_url,
-    "client_x509_cert_url": st.secrets.connections.gcs.client_x509_cert_url
-}
+from utils.expense_recettes_manage import (
+    add_expense,
+    add_recette,
+    view_and_delete_db
+)
+from utils.first_dashboard import (
+    do_altair_overall,
+    plot_current_month
+)
 
-# Initialize a client with your service account info
-CLIENT = storage.Client.from_service_account_info(service_account_info)
-DATA_PATH = Path('data')
-DB_NAME = 'ugo_expenses.csv'
 
-# Replace these with your values
-bucket_name = "data-account-app"
 
-# Get the bucket
-bucket = CLIENT.get_bucket(bucket_name)
 
-# Get the blob (object) corresponding to the SQLite database file
-blob = bucket.blob(DB_NAME)
 
-# Read the CSV file directly into a DataFrame
-content = blob.download_as_string()
-df = pd.read_csv(BytesIO(content))
-st.write(df)
 
-# Convert the DataFrame to a CSV format
-csv_content = df.to_csv(index=False)
+# Main function to switch between pages
+def main():
+    st.title("Daily Spendings App")
 
-# Define the blob (object) to write
-blob = bucket.blob('test_saved.csv')
+    # Create a navigation menu
+    page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard"])
 
-# Upload the CSV content to GCS
-blob.upload_from_string(csv_content, content_type='text/csv')
-st.write('saved')
+    if page == "Expenses":
+        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
+        with add_tab:
+            add_expense()
+
+        with modif_tab:
+            view_and_delete_db(table_name='expenses')
+
+
+    if page == "Recettes":
+        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
+        with add_tab:
+            add_recette()
+        
+        with modif_tab:
+            view_and_delete_db(table_name='recettes')
+
+    if page == "Dashboard":
+        overall, my_other = st.tabs(['Overall', 'My other'])
+        with overall:
+            do_altair_overall()
+            plot_current_month()
+        
+        with my_other:
+            # view_and_delete_db(table_name='recettes')
+            pass
+
+
+
+if __name__ == '__main__':
+    main()

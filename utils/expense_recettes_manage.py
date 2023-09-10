@@ -6,6 +6,7 @@ from utils.global_utils import *
 
 # Define a function to add new expenses
 def add_expense():
+
     # st.header("Add New Expense")
 
     # Form inputs for adding a new expense
@@ -21,16 +22,20 @@ def add_expense():
 
     # Add the new expense to the database
     if st.button("Add Expense"):
-        CONN, CURSOR = start_db(DB_NAME)
-        CURSOR.execute('''
-        INSERT INTO expenses (
-            date, description, category, sub_category, amount
-            ) VALUES (?, ?, ?, ?, ?)''',
-                        (spending_date, description, selected_catego, sub_category, amount))
-        CONN.commit()
+        new_expense = {
+            'id': len(expenses_df.id.max()) + 1,
+            'date': spending_date,
+            'description': description,
+            'category': selected_catego,
+            'sub_category': sub_category,
+            'amount': amount
+        }
+
+        expenses_df = read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
+        expenses_df.loc[len(expenses_df)] = new_expense
+        write_csv_to_gcs(expenses_df, f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
         st.success("Expense added successfully!")
 
-        save_and_close_db(CONN, 'test.db')
 
 # Define a function to add new expenses
 def add_recette():
@@ -44,61 +49,31 @@ def add_recette():
 
     # Add the new expense to the database
     if st.button("Add recette"):
-        CONN, CURSOR = start_db(DB_NAME)
+        recettes_df = read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
+        new_expense = {
+            'id': len(recettes_df.id.max()) + 1,
+            'date': recette_date,
+            'description': description,
+            'category': category,
+            'amount': amount
+        }
+        
+        recettes_df.loc[len(recettes_df)] = new_expense
+        write_csv_to_gcs(recettes_df, f'{USER_DEPENSES}_recettes.csv')
 
-        CURSOR.execute('''
-        INSERT INTO recettes (
-            date, description, category, amount
-            ) VALUES (?, ?, ?, ?)''',
-                        (recette_date, description, category, amount))
-        CONN.commit()
         st.success("Expense added successfully!")
-        save_and_close_db(CONN, 'test.db')
 
 
 # Define a function to view and delete expenses
 def view_and_delete_db(table_name):
-    st.header("View Expenses and Delete")
-    CONN, CURSOR = start_db(DB_NAME)
-
-    table_data, table_df = get_df_from_table(CONN, CURSOR, table_name, return_table_data=True)
-    
-    if table_data:
-
-        # Delete
-        data_to_delete = st.multiselect(f"Select {table_name} to delete", [data[0] for data in table_data])
+    csv_filename = f'{USER_DEPENSES}_{table_name}.csv'
+    data_df = read_csv_from_gcs(csv_filename)
+    if len(data_df) > 0:
+        data_to_delete = st.multiselect(f"Select {table_name} to delete", list(data_df.id.unique()))
         if st.button(f"Delete Selected {table_name}"):
-            for data_id in data_to_delete:
-                CURSOR.execute(f"DELETE FROM {table_name} WHERE id=?", (data_id,))
-            CONN.commit()
-            st.success(f"Selected {table_name} deleted successfully.")
-        st.table(table_df)
-
-        # Modify
-
-        # editable_df = st.data_editor(table_df, disabled='id')
-
-        # # Save changes if "Save" button is clicked
-        # if st.button("Save Changes"):
-        #     changed_index = editable_df.compare(table_df, align_axis = 0).reset_index().level_0.unique()
-        #     st.table(editable_df.compare(table_df, align_axis = 0).reset_index())
-        #     # Validate and update changes
-        #     # You can implement your validation rules here
-        #     update_table(editable_df.iloc[changed_index], table_name, id_to_col_names, CONN, CURSOR)
-        #     st.text('bjr')
-        #     st.success("Changes saved!")
+            with_deletion_data_df = data_df[~data_df.id.isin(data_to_delete)]
+            write_csv_to_gcs(with_deletion_data_df, csv_filename)
+        st.table(with_deletion_data_df)
 
     else:
         st.info(f"No {table_name} recorded yet.")
-    save_and_close_db(CONN, 'test.db')
-
-
-def update_table(updated_data, table_name, id_to_col_names, conn, cursor):
-    for _, row in updated_data.iterrows():
-        str_for_query = ', '.join([f'{val} = ?' for val in list(id_to_col_names.values())[1:]])
-        tuple_values = tuple([row[val] for val in id_to_col_names.values()])
-        st.text(tuple_values)
-
-        query = f"UPDATE {table_name} SET {str_for_query} WHERE id = ?"
-        cursor.execute(query, tuple_values)
-    save_and_close_db(conn, 'test.db')
