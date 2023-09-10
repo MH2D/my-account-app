@@ -1,5 +1,11 @@
 
 import streamlit as st
 
+username = st.text_input("Username", value="")
 
-st.text_input("Password:", value="", type="password")
+pwd = st.text_input("Password", value="", type="password")
+
+try:
+    st.write(st.secrets[username])
+except:
+    st.error('Wrong username', icon="🚨")
