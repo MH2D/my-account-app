@@ -40,3 +40,13 @@ blob = bucket.blob(DB_NAME)
 content = blob.download_as_string()
 df = pd.read_csv(BytesIO(content))
 st.write(df)
+
+# Convert the DataFrame to a CSV format
+csv_content = df.to_csv(index=False)
+
+# Define the blob (object) to write
+blob = bucket.blob('test_saved.csv')
+
+# Upload the CSV content to GCS
+blob.upload_from_string(csv_content, content_type='text/csv')
+st.write('saved')
