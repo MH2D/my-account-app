@@ -1,46 +1,44 @@
 import streamlit as st
-from utils.my_variables import *
-from utils.global_utils import *
-from utils.expense_recettes_manage import *
-from utils.first_dashboard import *
 
 
+def is_authenticated(password):
+    return password == "admin"
 
-# Main function to switch between pages
+
+def generate_login_block():
+    block1 = st.empty()
+    block2 = st.empty()
+
+    return block1, block2
+
+
+def clean_blocks(blocks):
+    for block in blocks:
+        block.empty()
+
+
+def login(blocks):
+    blocks[0].markdown("""
+            <style>
+                input {
+                    -webkit-text-security: disc;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+
+    return blocks[1].text_input('Password')
+
+
 def main():
-    st.title("Daily Spendings App")
-
-    # Create a navigation menu
-    page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard"])
-
-    if page == "Expenses":
-        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
-        with add_tab:
-            add_expense()
-
-        with modif_tab:
-            view_and_delete_db(table_name='expenses')
+    st.header('Hello')
+    st.balloons()
 
 
-    if page == "Recettes":
-        add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
-        with add_tab:
-            add_recette()
-        
-        with modif_tab:
-            view_and_delete_db(table_name='recettes')
+login_blocks = generate_login_block()
+password = login(login_blocks)
 
-    if page == "Dashboard":
-        overall, my_other = st.tabs(['Overall', 'My other'])
-        with overall:
-            do_altair_overall()
-            plot_current_month()
-        
-        with my_other:
-            # view_and_delete_db(table_name='recettes')
-            pass
-
-
-
-if __name__ == '__main__':
+if is_authenticated(password):
+    clean_blocks(login_blocks)
     main()
+elif password:
+    st.info("Please enter a valid password")
