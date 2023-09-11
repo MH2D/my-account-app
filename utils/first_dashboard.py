@@ -110,7 +110,8 @@ def plot_current_month():
 def do_monthly_balance(): 
     # Over time and category
     expense_df, recettes_df = get_expenses_recettes()
-
+    st.table(expense_df.head())
+    st.table(expense_df.recettes_df())
     
     expense_df.amount = - expense_df.amount
 
