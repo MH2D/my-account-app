@@ -132,3 +132,19 @@ def do_monthly_balance():
         title=f'Monthly Balance'
         )
     st.plotly_chart(plot_bar_time, use_container_width=True)
+
+    fig = go.Figure(go.Waterfall(
+        name = "20", orientation = "v",
+        x = total_df.date,
+        textposition = "outside",
+        text = total_df.amount.round().astype(str).values,
+        y = total_df.amount,
+        connector = {"line":{"color":"rgb(63, 63, 63)"}},
+    ))
+
+    fig.update_layout(
+            title = "Waterfall chart",
+            showlegend = True
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
