@@ -32,14 +32,15 @@ def main():
             view_and_delete_db(table_name='recettes')
 
     if page == "Dashboard":
-        overall, my_other = st.tabs(['Overall', 'My other'])
+        overall, my_other = st.tabs(['Expense/Recette balance', ''])
         with overall:
-            do_altair_overall()
+            
             do_monthly_balance()
-            plot_current_month()
+            
         
         with my_other:
-            # view_and_delete_db(table_name='recettes')
+            do_altair_overall()
+            plot_current_month()
             pass
 
 
