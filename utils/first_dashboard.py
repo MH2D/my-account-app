@@ -123,7 +123,7 @@ def do_monthly_balance():
         )['amount'].sum().reset_index()
 
     total_df.date = total_df['date'].dt.strftime('%B %Y')
-
+    total_df['cumsum'] = total_df.amount.cumsum()
 
     plot_bar_time = px.bar(
         total_df,
@@ -132,6 +132,7 @@ def do_monthly_balance():
         title=f'Monthly Balance'
         )
     st.plotly_chart(plot_bar_time, use_container_width=True)
+
 
     fig = go.Figure(go.Waterfall(
         name = "20", orientation = "v",
@@ -144,7 +145,9 @@ def do_monthly_balance():
 
     fig.update_layout(
             title = "Waterfall chart",
-            showlegend = True
+            showlegend = True,
+            yaxis_range=[total_df['cumsum'].min()*1.1,total_df['cumsum'].max()*1.1]
+
     )
-    
+
     st.plotly_chart(fig, use_container_width=True)
