@@ -135,7 +135,7 @@ def do_monthly_balance():
 
 
     fig = go.Figure(go.Waterfall(
-        name = "20", orientation = "v",
+        orientation = "v",
         x = total_df.date,
         textposition = "outside",
         text = total_df.amount.round().astype(str).values,
