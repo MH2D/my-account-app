@@ -22,6 +22,7 @@ def main():
             view_and_delete_db(table_name='expenses')
 
 
+
     if page == "Recettes":
         add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
         with add_tab:
