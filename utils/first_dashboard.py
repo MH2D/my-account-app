@@ -113,24 +113,24 @@ def do_monthly_balance():
     st.table(expense_df.head())
     st.table(expense_df.recettes_df())
     
-    expense_df.amount = - expense_df.amount
+    # expense_df.amount = - expense_df.amount
 
-    total_df = pd.merge(expense_df[['amount']], recettes_df[['amount']],
-    left_index=True,
-    right_index=True)
-    st.table(total_df)
+    # total_df = pd.merge(expense_df[['amount']], recettes_df[['amount']],
+    # left_index=True,
+    # right_index=True)
+    # st.table(total_df)
 
-    total_df = total_df.groupby(
-        [
-            pd.Grouper(freq=f'1m')
-        ]
-        )['amount'].sum().reset_index()
+    # total_df = total_df.groupby(
+    #     [
+    #         pd.Grouper(freq=f'1m')
+    #     ]
+    #     )['amount'].sum().reset_index()
 
 
-    plot_bar_time = px.bar(
-        total_df,
-        x='date',
-        y='amount',
-        title=f'Monthly Balance'
-        )
-    st.plotly_chart(plot_bar_time, use_container_width=True)
+    # plot_bar_time = px.bar(
+    #     total_df,
+    #     x='date',
+    #     y='amount',
+    #     title=f'Monthly Balance'
+    #     )
+    # st.plotly_chart(plot_bar_time, use_container_width=True)
