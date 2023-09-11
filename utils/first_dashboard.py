@@ -105,3 +105,30 @@ def plot_current_month():
     #         hovermode='x unified'
     #         )
     st.plotly_chart(nested_pie_this_month, use_container_width=True)
+
+
+def do_monthly_balance(): 
+    # Over time and category
+    expense_df, recettes_df = get_expenses_recettes()
+
+    
+    expense_df.amount = - expense_df.amount
+
+    total_df = pd.merge(expense_df[['amount']], recettes_df[['amount']],
+    left_index=True,
+    right_index=True)
+
+    total_df = total_df.groupby(
+        [
+            pd.Grouper(freq=f'1m')
+        ]
+        )['amount'].sum().reset_index()
+
+
+    plot_bar_time = px.bar(
+        total_df,
+        x='date',
+        y='amount',
+        title=f'Monthly Balance'
+        )
+    st.plotly_chart(plot_bar_time, use_container_width=True)

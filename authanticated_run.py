@@ -34,6 +34,7 @@ def main():
         overall, my_other = st.tabs(['Overall', 'My other'])
         with overall:
             do_altair_overall()
+            do_monthly_balance()
             plot_current_month()
         
         with my_other:
