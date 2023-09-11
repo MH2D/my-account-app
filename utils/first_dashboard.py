@@ -117,6 +117,7 @@ def do_monthly_balance():
     total_df = pd.merge(expense_df[['amount']], recettes_df[['amount']],
     left_index=True,
     right_index=True)
+    st.table(total_df)
 
     total_df = total_df.groupby(
         [
