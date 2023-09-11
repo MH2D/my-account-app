@@ -146,7 +146,7 @@ def do_monthly_balance():
     fig.update_layout(
             title = "Waterfall chart",
             showlegend = True,
-            yaxis_range=[total_df['cumsum'].min()*1.1,total_df['cumsum'].max()*1.1]
+            yaxis_range= [np.min([-10,total_df['cumsum'].min()*1.1]), np.max([10, total_df['cumsum'].max()*1.1])]
 
     )
 
