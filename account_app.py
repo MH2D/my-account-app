@@ -20,15 +20,6 @@ authenticator = stauth.Authenticate(
 
 authenticator.login('Login', 'main')
 
-# if st.button('register'):
-try:
-    if authenticator.register_user('Register user', preauthorization=False):
-        st.success('User registered successfully')
-        with open('data/configs.yaml', 'w') as file:
-            yaml.dump(config, file, default_flow_style=False)
-except Exception as e:
-    st.error(e)
-
 
 if st.session_state["authentication_status"]:
     authenticator.logout('Logout', 'main', key='unique_key')
