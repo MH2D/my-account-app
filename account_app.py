@@ -23,8 +23,8 @@ authenticator.login('Login', 'main')
 
 if st.session_state["authentication_status"]:
     authenticator.logout('Logout', 'main', key='unique_key')
-    st.session_state["username"]
-    depense_app.main()
+    USERNAME = st.session_state["username"]
+    depense_app.main(USERNAME)
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
