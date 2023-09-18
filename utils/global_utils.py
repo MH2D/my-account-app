@@ -16,13 +16,20 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
     # Get the bucket
     bucket = CLIENT.get_bucket(bucket_name)
 
-    # Get the blob (object) corresponding to the SQLite database file
-    blob = bucket.blob(csv_filename)
+    try:
+        # Get the blob (object) corresponding to the SQLite database file
+        blob = bucket.blob(csv_filename)
 
-    # Read the CSV file directly into a DataFrame
-    content = blob.download_as_string()
-    csv_df = pd.read_csv(BytesIO(content))
-
+        # Read the CSV file directly into a DataFrame
+        content = blob.download_as_string()
+        csv_df = pd.read_csv(BytesIO(content))
+    except:
+        if 'expenses' in csv_filename:
+            cols = ['id', 'date', 'description', 'category', 'sub_category', 'amount']
+        else:
+            cols = ['id', 'date', 'description', 'category', 'amount']
+            
+        df = pd.DataFrame(columns=['id', 'date', 'description', 'category', 'sub_category', 'amount'])
     return csv_df
 
 def write_csv_to_gcs(to_save_df, saved_filename, bucket_name=BUCKET_NAME):
