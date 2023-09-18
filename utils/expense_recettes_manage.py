@@ -26,8 +26,10 @@ def add_expense(USERNAME):
     if st.button("Add Expense"):
         expenses_df = read_csv_from_gcs(f'{USERNAME}_expenses.csv', bucket_name=BUCKET_NAME)
         new_id = expenses_df.id.max() + 1
-        if np.isna(new_id):
-            new_id = 1
+        print(new_id == np.nan)
+        
+        # if np.isna(new_id):
+        #     new_id = 1
         new_expense = {
             'id': new_id,
             'date': spending_date,
