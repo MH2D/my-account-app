@@ -29,8 +29,8 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
         else:
             cols = ['id', 'date', 'description', 'category', 'amount']
 
-        df = pd.DataFrame(columns=cols)
-        
+        csv_df = pd.DataFrame(columns=cols)
+
     return csv_df
 
 def write_csv_to_gcs(to_save_df, saved_filename, bucket_name=BUCKET_NAME):
