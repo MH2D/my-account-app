@@ -7,7 +7,7 @@ from utils.first_dashboard import *
 
 
 # Main function to switch between pages
-def main():
+def main(USERNAME):
     st.title("Daily Spendings App")
 
     # Create a navigation menu
@@ -16,33 +16,28 @@ def main():
     if page == "Expenses":
         add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
         with add_tab:
-            add_expense()
+            add_expense(USERNAME)
 
         with modif_tab:
-            view_and_delete_db(table_name='expenses')
+            view_and_delete_db(table_name='expenses', USERNAME=USERNAME)
 
 
 
     if page == "Recettes":
         add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
         with add_tab:
-            add_recette()
+            add_recette(USERNAME)
         
         with modif_tab:
-            view_and_delete_db(table_name='recettes')
+            view_and_delete_db(table_name='recettes', USERNAME=USERNAME)
 
     if page == "Dashboard":
         balance, expense_analysis = st.tabs(['Expense/Recette balance', 'Expense analysis'])
         with balance:
-            do_monthly_balance()
+            do_monthly_balance(USERNAME)
             
         
         with expense_analysis:
-            do_altair_overall()
-            plot_current_month()
+            do_altair_overall(USERNAME)
+            plot_current_month(USERNAME)
             pass
-
-
-
-if __name__ == '__main__':
-    main()

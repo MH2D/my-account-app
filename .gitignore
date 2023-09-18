@@ -3,3 +3,4 @@ data/account_management_copy.db
 data/account_management.db
 data/ugo_expenses.csv
 data/ugo_recettes.csv
+tests.ipynb

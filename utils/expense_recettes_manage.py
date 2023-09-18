@@ -7,7 +7,7 @@ from utils.global_utils import *
 
 
 # Define a function to add new expenses
-def add_expense():
+def add_expense(USERNAME):
 
     # st.header("Add New Expense")
 
@@ -24,7 +24,7 @@ def add_expense():
 
     # Add the new expense to the database
     if st.button("Add Expense"):
-        expenses_df = read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
+        expenses_df = read_csv_from_gcs(f'{USERNAME}_expenses.csv', bucket_name=BUCKET_NAME)
         
         new_expense = {
             'id': expenses_df.id.max() + 1,
@@ -36,12 +36,12 @@ def add_expense():
         }
 
         expenses_df.loc[len(expenses_df)] = new_expense
-        write_csv_to_gcs(expenses_df, f'{USER_DEPENSES}_expenses.csv', bucket_name=BUCKET_NAME)
+        write_csv_to_gcs(expenses_df, f'{USERNAME}_expenses.csv', bucket_name=BUCKET_NAME)
         st.success("Expense added successfully!")
 
 
 # Define a function to add new expenses
-def add_recette():
+def add_recette(USERNAME):
     # st.header("Add New recettes")
 
     # Form inputs for adding a new expense
@@ -52,7 +52,7 @@ def add_recette():
 
     # Add the new expense to the database
     if st.button("Add recette"):
-        recettes_df = read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
+        recettes_df = read_csv_from_gcs(f'{USERNAME}_recettes.csv')
         new_expense = {
             'id': recettes_df.id.max() + 1,
             'date': recette_date,
@@ -62,14 +62,14 @@ def add_recette():
         }
         
         recettes_df.loc[len(recettes_df)] = new_expense
-        write_csv_to_gcs(recettes_df, f'{USER_DEPENSES}_recettes.csv')
+        write_csv_to_gcs(recettes_df, f'{USERNAME}_recettes.csv')
 
         st.success("Expense added successfully!")
 
 
 # Define a function to view and delete expenses
-def view_and_delete_db(table_name):
-    csv_filename = f'{USER_DEPENSES}_{table_name}.csv'
+def view_and_delete_db(table_name, USERNAME):
+    csv_filename = f'{USERNAME}_{table_name}.csv'
     data_df = read_csv_from_gcs(csv_filename)
     if len(data_df) > 0:
         data_to_delete = st.multiselect(f"Select {table_name} to delete", list(data_df.id.unique()))

@@ -8,6 +8,10 @@ credentials:
       email: emma.toupance@gmail.com
       name: Emma Toupance
       password: $2b$12$/Mp4c1rkCqTUhI9Aq6CE3uBAt8T2irQOK.HWSMAGz2cMdCYT2e7Em
+    petitzizi:
+      email: marinmuhieddine@gmail.com
+      name: Marin Muhieddine
+      password: $2b$12$G/Txil0/v2z9s.xBvVjxouLQVDgdkhF7iwRjDjHel8ddpEniZ.6DO
 cookie:
   expiry_days: 30
   key: some_signature_key # Must be string

@@ -10,19 +10,19 @@ from utils.my_variables import *
 from utils.global_utils import *
 
 # @st.cache
-def get_expenses_recettes():
-    expense_df =  read_csv_from_gcs(f'{USER_DEPENSES}_expenses.csv')
+def get_expenses_recettes(USERNAME):
+    expense_df =  read_csv_from_gcs(f'{USERNAME}_expenses.csv')
     expense_df = expense_df.set_index('date')
     expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
 
-    recettes_df =  read_csv_from_gcs(f'{USER_DEPENSES}_recettes.csv')
+    recettes_df =  read_csv_from_gcs(f'{USERNAME}_recettes.csv')
     recettes_df = recettes_df.set_index('date')
     recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
     return expense_df, recettes_df
 
-def do_altair_overall(): 
+def do_altair_overall(USERNAME): 
     # Over time and category
-    expense_df, _ = get_expenses_recettes()
+    expense_df, _ = get_expenses_recettes(USERNAME)
 
     st.subheader("Expense over time")
     freq_to_name = {
@@ -52,9 +52,9 @@ def do_altair_overall():
     st.plotly_chart(plot_bar_time, use_container_width=True)
 
 
-def plot_current_month():
+def plot_current_month(USERNAME):
     
-    expense_df, recettes_df = get_expenses_recettes()
+    expense_df, recettes_df = get_expenses_recettes(USERNAME)
     st.subheader("Monthly breakdown")
 
     current_month = st.date_input("Date")
@@ -107,9 +107,9 @@ def plot_current_month():
     st.plotly_chart(nested_pie_this_month, use_container_width=True)
 
 
-def do_monthly_balance(): 
+def do_monthly_balance(USERNAME): 
     # Over time and category
-    expense_df, recettes_df = get_expenses_recettes()
+    expense_df, recettes_df = get_expenses_recettes(USERNAME)
     expense_df.head()
 
     expense_df.amount = - expense_df.amount
