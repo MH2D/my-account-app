@@ -26,9 +26,8 @@ def add_expense(USERNAME):
     if st.button("Add Expense"):
         expenses_df = read_csv_from_gcs(f'{USERNAME}_expenses.csv', bucket_name=BUCKET_NAME)
         new_id = expenses_df.id.max() + 1
-        if np.isnan(new_id):
-            new_id = 1
-            
+        st.write(np.isnan(new_id))
+
         new_expense = {
             'id': new_id,
             'date': spending_date,
@@ -57,7 +56,7 @@ def add_recette(USERNAME):
     if st.button("Add recette"):
         recettes_df = read_csv_from_gcs(f'{USERNAME}_recettes.csv')
         new_id = recettes_df.id.max() + 1
-        if np.isna(new_id):
+        if np.isnan(new_id):
             new_id = 1
         new_expense = {
             'id': new_id,
