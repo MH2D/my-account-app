@@ -22,7 +22,9 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
 
         # Read the CSV file directly into a DataFrame
         content = blob.download_as_string()
+        print(content)
         csv_df = pd.read_csv(BytesIO(content))
+
     except:
         if 'expenses' in csv_filename:
             cols = ['id', 'date', 'description', 'category', 'sub_category', 'amount']
