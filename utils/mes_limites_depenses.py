@@ -15,9 +15,9 @@ def questionnaire_category(USERNAME):
         limit_categories[cat] = st.number_input(cat, min_value=5)
         
     if st.button('Update your budget limits'):
-
+        st.write(limit_categories)
         for cat, lim in limit_categories.items():
-            limits_df.limit = limits_df.category.apply(lambda x: lim)
+            limits_df.limit = limits_df.category.apply(lambda x: limit_categories[x])
 
         write_csv_to_gcs(limits_df, f'{USERNAME}_budget_limits.csv', bucket_name=BUCKET_NAME)
 
