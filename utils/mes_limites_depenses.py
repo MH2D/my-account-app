@@ -20,3 +20,5 @@ def questionnaire_category(USERNAME):
             limits_df.limit = limits_df.category.apply(lambda x: lim)
 
         write_csv_to_gcs(limits_df, f'{USERNAME}_budget_limits.csv', bucket_name=BUCKET_NAME)
+
+    st.table(limits_df)
