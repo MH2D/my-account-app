@@ -28,9 +28,11 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
     except:
         if 'expenses' in csv_filename:
             cols = ['id', 'date', 'description', 'category', 'sub_category', 'amount']
-        else:
+        elif 'recette' in csv_filename:
             cols = ['id', 'date', 'description', 'category', 'amount']
-
+        elif 'budget_limits' in csv_filename:
+            cols = ['category', 'limit']
+        
         csv_df = pd.DataFrame(columns=cols)
 
     return csv_df
