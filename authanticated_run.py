@@ -3,7 +3,7 @@ from utils.my_variables import *
 from utils.global_utils import *
 from utils.expense_recettes_manage import *
 from utils.first_dashboard import *
-
+from utils.mes_limites_depenses import *
 
 
 # Main function to switch between pages
@@ -11,7 +11,7 @@ def main(USERNAME):
     st.title("Daily Spendings App")
 
     # Create a navigation menu
-    page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard"])
+    page = st.sidebar.selectbox("Select a page", ["Expenses", "Recettes", "Dashboard", "My limits"])
 
     if page == "Expenses":
         add_tab, modif_tab = st.tabs(['Add new', 'Manage'])
@@ -41,3 +41,6 @@ def main(USERNAME):
             do_altair_overall(USERNAME)
             plot_current_month(USERNAME)
             pass
+
+    if page == 'My limits':
+        questionnaire_category(USERNAME)
