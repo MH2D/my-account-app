@@ -33,7 +33,7 @@ def plot_budget_actual_limits(USERNAME):
     expenses_df, _ = get_expenses_recettes(USERNAME)
 
     total_limit = limits_df.limit.sum()
-    st.title(f'to limited budget = {total_limit:.0f}€')
+    st.title(f'Total limited budget = {total_limit:.0f}€')
 
     this_month_expenses = expenses_df.sort_index()[date.today().replace(day=1).strftime(FRENCH_DATEFORMAT):].copy()
     this_month_expenses = this_month_expenses.groupby('category').agg({'amount':'sum'})
@@ -42,13 +42,13 @@ def plot_budget_actual_limits(USERNAME):
     limits_and_expenses_for_plot['limit_reached'] = limits_and_expenses_for_plot.amount / limits_and_expenses_for_plot.limit
     limits_and_expenses_for_plot['limit_reached'] = limits_and_expenses_for_plot['limit_reached'].apply(
         lambda x:
-        min(x, 1.5)
+        min(x, 1.2)
     )
     limits_and_expenses_for_plot['available_budget'] = limits_and_expenses_for_plot.limit - limits_and_expenses_for_plot.amount
 
     limits_and_expenses_for_plot['limit_text']= limits_and_expenses_for_plot.limit.apply(lambda x: f'Limit: {x:.0f}€')
     limits_and_expenses_for_plot['avail_budg_text']= limits_and_expenses_for_plot.available_budget.apply(
-        lambda x: f'Left: {x:.0f}€' if x > 0 else 'Nothing left !'
+        lambda x: f'Left: {x:.0f}€' if x > 0 else f'Overspent! {-x:.0f}€'
         )
     # THE PLOT
 
