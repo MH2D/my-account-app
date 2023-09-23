@@ -18,7 +18,7 @@ def questionnaire_category(USERNAME):
     for cat in category_list:
         limit_categories[cat] = st.number_input(
             cat,
-            value=limits_df[limits_df.category == cat].values[0],
+            value=limits_df[limits_df.category == cat].limit.values[0],
             min_value=5
             )
         
