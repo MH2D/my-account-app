@@ -23,7 +23,6 @@ def questionnaire_category(USERNAME):
             )
         
     if st.button('Update your budget limits'):
-        st.write(limit_categories)
         for cat, lim in limit_categories.items():
             limits_df.limit = limits_df.category.apply(lambda x: limit_categories[x])
 
