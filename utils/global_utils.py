@@ -22,7 +22,6 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
 
         # Read the CSV file directly into a DataFrame
         content = blob.download_as_string()
-        print(content)
         csv_df = pd.read_csv(BytesIO(content))
 
     except:
@@ -49,6 +48,17 @@ def write_csv_to_gcs(to_save_df, saved_filename, bucket_name=BUCKET_NAME):
 
     # Upload the CSV content to GCS
     blob.upload_from_string(csv_content, content_type='text/csv')
+
+
+def get_expenses_recettes(USERNAME):
+    expense_df =  read_csv_from_gcs(f'{USERNAME}_expenses.csv')
+    expense_df = expense_df.set_index('date').sort_index()
+    expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
+
+    recettes_df =  read_csv_from_gcs(f'{USERNAME}_recettes.csv')
+    recettes_df = recettes_df.set_index('date').sort_index()
+    recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
+    return expense_df, recettes_df
 
 
 # Convert RGB tuple to hexadecimal color code

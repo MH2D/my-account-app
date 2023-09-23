@@ -9,17 +9,6 @@ import datetime as dt
 from utils.my_variables import *
 from utils.global_utils import *
 
-# @st.cache
-def get_expenses_recettes(USERNAME):
-    expense_df =  read_csv_from_gcs(f'{USERNAME}_expenses.csv')
-    expense_df = expense_df.set_index('date')
-    expense_df.index = pd.to_datetime(expense_df.index, format=FRENCH_DATEFORMAT)
-
-    recettes_df =  read_csv_from_gcs(f'{USERNAME}_recettes.csv')
-    recettes_df = recettes_df.set_index('date')
-    recettes_df.index = pd.to_datetime(recettes_df.index, format=FRENCH_DATEFORMAT)
-    return expense_df, recettes_df
-
 def do_altair_overall(USERNAME): 
     # Over time and category
     expense_df, _ = get_expenses_recettes(USERNAME)
