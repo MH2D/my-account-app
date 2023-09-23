@@ -34,7 +34,7 @@ def plot_budget_actual_limits(USERNAME):
     expenses_df, _ = get_expenses_recettes(USERNAME)
 
     total_limit = limits_df.limit.sum()
-    st.title(f'to limited budget = {total_limit:.0f}€')
+    # st.title(f'to limited budget = {total_limit:.0f}€')
 
     this_month_expenses = expenses_df.sort_index()[date.today().replace(day=1).strftime(FRENCH_DATEFORMAT):].copy()
     this_month_expenses = this_month_expenses.groupby('category').agg({'amount':'sum'})
