@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 def questionnaire_category(USERNAME):
     category_list = list(CATEGORIES['expenses'].keys())
     limits_df = read_csv_from_gcs(f'{USERNAME}_budget_limits.csv', bucket_name=BUCKET_NAME)
-    if len(limits_df):
+    if len(limits_df) == 0:
         limits_df['category'] = category_list
         limits_df['limit'] = 5
 
