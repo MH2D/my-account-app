@@ -32,7 +32,7 @@ def plot_budget_actual_limits(USERNAME):
 
     limits_df = read_csv_from_gcs(f'{USERNAME}_budget_limits.csv', bucket_name=BUCKET_NAME)
     expenses_df, _ = get_expenses_recettes(USERNAME)
-    
+    st.text(f'to limited budget = {limits_df.limit.sum:.0f}€')
     this_month_expenses = expenses_df.sort_index()[date.today().replace(day=1).strftime(FRENCH_DATEFORMAT):].copy()
     this_month_expenses = this_month_expenses.groupby('category').agg({'amount':'sum'})
     limits_and_expenses_for_plot = pd.merge(limits_df, this_month_expenses, right_index=True, left_on='category', how='outer').fillna(0)
