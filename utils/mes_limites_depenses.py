@@ -43,7 +43,7 @@ def plot_budget_actual_limits(USERNAME):
     limits_and_expenses_for_plot['limit_reached'] = limits_and_expenses_for_plot.amount / limits_and_expenses_for_plot.limit
     limits_and_expenses_for_plot['limit_reached'] = limits_and_expenses_for_plot['limit_reached'].apply(
         lambda x:
-        max(x, 1.5)
+        min(x, 1.5)
     )
     limits_and_expenses_for_plot['available_budget'] = limits_and_expenses_for_plot.limit - limits_and_expenses_for_plot.amount
 
