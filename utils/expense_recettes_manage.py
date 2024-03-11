@@ -78,6 +78,7 @@ def add_recette(USERNAME):
 def view_and_delete_db(table_name, USERNAME):
     csv_filename = f'{USERNAME}_{table_name}.csv'
     data_df = read_csv_from_gcs(csv_filename)
+    data_df = data_df.sort_values('date', ascending=False)
     if len(data_df) > 0:
         data_to_delete = st.multiselect(f"Select {table_name} to delete", list(data_df.id.unique()))
         if st.button(f"Delete Selected {table_name}"):
