@@ -18,7 +18,7 @@ authenticator = stauth.Authenticate(
     config['preauthorized']
 )
 
-authenticator.login('Login', 'main')
+authenticator.login('main')
 
 
 if st.session_state["authentication_status"]:
