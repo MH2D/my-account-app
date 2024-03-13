@@ -139,7 +139,7 @@ def read_file_expenses(USERNAME):
         else:
             selected_category = st.selectbox("Select Category", CATEGORIES['recettes'], key=f'catego_{st.session_state.index_df}')
         
-        amount = st.number_input("Amount", value=df.iloc[st.session_state.index_df]"montant")
+        amount = st.number_input("Amount", value=df.iloc[st.session_state.index_df]["montant"])
         st.write(st.session_state.index_df)
 
         col1, col2, col3 = st.columns([1,1,1])
