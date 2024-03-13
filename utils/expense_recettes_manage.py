@@ -84,6 +84,7 @@ def add_recette(USERNAME):
 def view_and_delete_db(table_name, USERNAME):
     csv_filename = f'{USERNAME}_{table_name}.csv'
     data_df = read_csv_from_gcs(csv_filename)
+    st.write(data_df)
     data_df = data_df.sort_values('date', ascending=False)
     if len(data_df) > 0:
         data_to_delete = st.multiselect(f"Select {table_name} to delete", list(data_df.id.unique()))
@@ -118,7 +119,7 @@ def read_file_expenses(USERNAME):
         df = pd.read_csv(uploaded_file, sep=';', encoding='latin1').reset_index(drop=True)
         df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
         df = df.sort_values('date')
-        
+
         df["montant"] = df["montant"].str.replace(',', '.').astype(float)
         current_montant = df.at[st.session_state.index_df, "montant"]
         type_of_line = 'EXPENSE' if current_montant < 0 else 'RECETTE'
