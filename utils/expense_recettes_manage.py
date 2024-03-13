@@ -86,6 +86,7 @@ def view_and_delete_db(table_name, USERNAME):
     data_df = read_csv_from_gcs(csv_filename)
     data_df = data_df.sort_values('date', ascending=False)
     st.write(data_df.head(10))
+    st.write("hellllo")
     if len(data_df) > 0:
         data_to_delete = st.multiselect(f"Select {table_name} to delete", list(data_df.id.unique()))
         if st.button(f"Delete Selected {table_name}"):
