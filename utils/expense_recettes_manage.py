@@ -84,7 +84,7 @@ def add_recette(USERNAME):
 def view_and_delete_db(table_name, USERNAME):
     csv_filename = f'{USERNAME}_{table_name}.csv'
     data_df = read_csv_from_gcs(csv_filename)
-    data_df = data_df.sort_values('date', ascending=False)
+    data_df = data_df.sort_values('id', ascending=False)
     st.write(data_df.head(10))
     st.write("hellllo")
     if len(data_df) > 0:
