@@ -126,7 +126,7 @@ def read_file_expenses(USERNAME):
         st.write(f'Current row: {st.session_state.index_df} over {len(df)}')
 
         spending_date = st.date_input("Date", value=df.iloc[st.session_state.index_df]["date"])
-        description = st.text_input("Description", value=df.iloc[st.session_state.index_df]["libelle"])
+        description = st.text_input("Description", value=df.iloc[st.session_state.index_df]["description"])
         libelle = df.iloc[st.session_state.index_df]["libelle"]
 
 
