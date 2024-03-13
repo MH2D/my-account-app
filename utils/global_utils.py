@@ -26,9 +26,9 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
 
     except:
         if 'expenses' in csv_filename:
-            cols = ['id', 'date', 'description', 'category', 'sub_category', 'amount']
+            cols = ['id', 'date', 'description', 'libelle_banque', 'category', 'sub_category', 'amount']
         elif 'recette' in csv_filename:
-            cols = ['id', 'date', 'description', 'category', 'amount']
+            cols = ['id', 'date', 'description', 'libelle_banque', 'category', 'amount']
         elif 'budget_limits' in csv_filename:
             cols = ['category', 'limit']
         
