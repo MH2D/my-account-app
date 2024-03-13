@@ -121,7 +121,7 @@ def read_file_expenses(USERNAME):
         df = df.sort_values('date')
 
         df["montant"] = df["montant"].str.replace(',', '.').astype(float)
-        st.write( df.iloc[st.session_state.index_df, "montant"])
+        st.write( df.iloc[st.session_state.index_df,:].index)
 
         current_montant = df.iloc[st.session_state.index_df, "montant"]
         type_of_line = 'EXPENSE' if current_montant < 0 else 'RECETTE'
