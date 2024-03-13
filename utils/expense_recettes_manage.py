@@ -121,7 +121,7 @@ def read_file_expenses(USERNAME):
         df = df.sort_values('date')
 
         df["montant"] = df["montant"].str.replace(',', '.').astype(float)
-        current_montant = df.at[st.session_state.index_df, "montant"]
+        current_montant = df.iloc[st.session_state.index_df, "montant"]
         type_of_line = 'EXPENSE' if current_montant < 0 else 'RECETTE'
         st.write(f'Current row: {st.session_state.index_df} over {len(df)}')
 
@@ -138,7 +138,7 @@ def read_file_expenses(USERNAME):
         else:
             selected_category = st.selectbox("Select Category", CATEGORIES['recettes'], key=f'catego_{st.session_state.index_df}')
         
-        amount = st.number_input("Amount", value=df.at[st.session_state.index_df, "montant"])
+        amount = st.number_input("Amount", value=df.iloc[st.session_state.index_df, "montant"])
         st.write(st.session_state.index_df)
 
         col1, col2, col3 = st.columns([1,1,1])
