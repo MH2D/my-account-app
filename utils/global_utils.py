@@ -23,7 +23,6 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
         # Read the CSV file directly into a DataFrame
         content = blob.download_as_string()
         csv_df = pd.read_csv(BytesIO(content))
-        st.write(csv_df)
         
     except:
         if 'expenses' in csv_filename:
