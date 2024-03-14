@@ -199,5 +199,5 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
     # Filter out rows where subset of df1's columns matches subset of df2's columns
     filtered_df = df[~merged_df['libelle_banque'].notna()]
     st.write(len(filtered_df))
-    st.table(filtered_df)
+    st.write(filtered_df)
     return df
