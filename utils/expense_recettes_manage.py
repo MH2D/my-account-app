@@ -192,8 +192,8 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
     date2 = pd.to_datetime(df['date'], errors='coerce', format='%d-%m-%Y')
     df['date'] = date1.fillna(date2)
 
-    st.write(exp.info())
-    st.write(df.info())
+    st.write(exp.tail(5))
+    st.write(df.tail(4))
     merged_df = pd.merge(df, exp, left_on=['montant', 'date', 'libelle'], right_on=['amount', 'date', 'libelle_banque'], how='left')
     st.write(merged_df.tail(10))
     # Filter out rows where subset of df1's columns matches subset of df2's columns
