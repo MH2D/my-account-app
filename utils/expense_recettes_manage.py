@@ -188,6 +188,7 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
 
     csv_filename = f'{USERNAME}_expenses.csv'
     exp = read_csv_from_gcs(csv_filename)
+    st.write(exp.head())
     exp.date = pd.to_datetime(exp.date, format=FRENCH_DATEFORMAT)
     
     st.write(exp.info())
