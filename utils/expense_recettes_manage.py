@@ -97,6 +97,8 @@ def view_and_delete_db(table_name, USERNAME):
     else:
         st.info(f"No {table_name} recorded yet.")
 
+
+
     
 def read_file_expenses(USERNAME):
     # File uploader widget
@@ -174,3 +176,18 @@ def read_file_expenses(USERNAME):
             st.session_state.disabled = True
 
         st.write(st.session_state['added_rows'])
+
+
+def read_csv_input_and_filter(USERNAME, uploaded_file):
+    df = pd.read_csv(uploaded_file, sep=';', encoding='latin1').reset_index(drop=True)
+    try:
+        df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
+    except:
+        df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%d")
+    
+    df = df.sort_values('date')
+    st.write(df.head(4))
+
+    csv_filename = f'{USERNAME}_expenses.csv'
+    exp = read_csv_from_gcs(csv_filename)
+    st.write(exp.head(4))
