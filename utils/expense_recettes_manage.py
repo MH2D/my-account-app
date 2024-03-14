@@ -188,9 +188,9 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
 
     csv_filename = f'{USERNAME}_expenses.csv'
     exp = read_csv_from_gcs(csv_filename)
-    date1 = pd.to_datetime(df['date'], errors='coerce', format='%Y-%m-%d')
-    date2 = pd.to_datetime(df['date'], errors='coerce', format='%d-%m-%Y')
-    df['date'] = date1.fillna(date2)
+    date1 = pd.to_datetime(exp['date'], errors='coerce', format='%Y-%m-%d')
+    date2 = pd.to_datetime(exp['date'], errors='coerce', format='%d-%m-%Y')
+    exp['date'] = date1.fillna(date2)
 
     st.write(exp.tail(5))
     st.write(df.tail(4))
