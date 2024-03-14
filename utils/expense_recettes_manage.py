@@ -117,10 +117,7 @@ def read_file_expenses(USERNAME):
 
     if uploaded_file is not None:
         st.write(st.session_state.index_df)
-        # Read the CSV file into a DataFrame
-        df = pd.read_csv(uploaded_file, sep=';', encoding='latin1').reset_index(drop=True)
-        df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
-        df = df.sort_values('date')
+        df = read_csv_input_and_filter(USERNAME, uploaded_file)
 
         df["montant"] = df["montant"].str.replace(',', '.').astype(float)
         current_montant = df.iloc[st.session_state.index_df]["montant"]
