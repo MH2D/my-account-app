@@ -189,11 +189,12 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
     csv_filename = f'{USERNAME}_expenses.csv'
     exp = read_csv_from_gcs(csv_filename)
     
-    # Merge dataframes on columns G, H, I
+    st.write(exp.columns)
+    st.write(df.columns)
     merged_df = pd.merge(df, exp, left_on=['montant', 'date', 'libelle'], right_on=['amount', 'date', 'libelle_banque'], how='left')
     st.write(merged_df.tail(10))
     # Filter out rows where subset of df1's columns matches subset of df2's columns
     filtered_df = df[~merged_df['libelle_banque'].notna()]
-    st.write(len(df))
-    st.table(df)
+    st.write(len(filtered_df))
+    st.table(filtered_df)
     return df
