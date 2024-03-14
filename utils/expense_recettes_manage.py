@@ -118,7 +118,6 @@ def read_file_expenses(USERNAME):
     if uploaded_file is not None:
         st.write(st.session_state.index_df)
         df = read_csv_input_and_filter(USERNAME, uploaded_file)
-        st.write(df.head())
 
         current_montant = df.iloc[st.session_state.index_df]["montant"]
         type_of_line = 'EXPENSE' if current_montant < 0 else 'RECETTE'
@@ -190,3 +189,12 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
     csv_filename = f'{USERNAME}_expenses.csv'
     exp = read_csv_from_gcs(csv_filename)
     st.write(exp.head(4))
+    
+    # Merge dataframes on columns G, H, I
+    merged_df = pd.merge(df, exp, left_on=['montant', 'date', 'libelle'], right_on=['amount', 'date', 'libelle_banque'], how='left')
+
+    # Filter out rows where subset of df1's columns matches subset of df2's columns
+    filtered_df = df[~merged_df['G'].notna()]
+    st.write(len(df))
+    st.table(df)
+    return df
