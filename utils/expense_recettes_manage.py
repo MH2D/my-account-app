@@ -188,8 +188,10 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
 
     csv_filename = f'{USERNAME}_expenses.csv'
     exp = read_csv_from_gcs(csv_filename)
-    exp['date'] = pd.to_datetime(exp['date'], format=FRENCH_DATEFORMAT)
-    
+    date1 = pd.to_datetime(df['date'], errors='coerce', format='%Y-%m-%d')
+    date2 = pd.to_datetime(df['date'], errors='coerce', format='%d-%m-%Y')
+    df['date'] = date1.fillna(date2)
+
     st.write(exp.info())
     st.write(df.info())
     merged_df = pd.merge(df, exp, left_on=['montant', 'date', 'libelle'], right_on=['amount', 'date', 'libelle_banque'], how='left')
