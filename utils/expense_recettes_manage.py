@@ -119,7 +119,7 @@ def read_file_expenses(USERNAME):
         st.write(st.session_state.index_df)
         df = read_csv_input_and_filter(USERNAME, uploaded_file)
 
-        df["montant"] = df["montant"].str.replace(',', '.').astype(float)
+
         current_montant = df.iloc[st.session_state.index_df]["montant"]
         type_of_line = 'EXPENSE' if current_montant < 0 else 'RECETTE'
 
@@ -179,9 +179,12 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
     df = pd.read_csv(uploaded_file, sep=',', encoding='latin1').reset_index(drop=True)
     try:
         df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
+        df["montant"] = df["montant"].str.replace(',', '.').astype(float)
+
     except:
         df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%d")
-    
+        df["montant"] = df.montant.astype(float)
+        
     df = df.sort_values('date')
     st.write(df.head(4))
 
