@@ -176,7 +176,7 @@ def read_file_expenses(USERNAME):
 
 
 def read_csv_input_and_filter(USERNAME, uploaded_file):
-    df = pd.read_csv(uploaded_file, sep=';|,', encoding='latin1').reset_index(drop=True)
+    df = pd.read_csv(uploaded_file, sep=';,', encoding='latin1').reset_index(drop=True)
     st.write(df)
     try:
         df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
