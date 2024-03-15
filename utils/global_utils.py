@@ -26,6 +26,7 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
         date1 = pd.to_datetime(csv_df['date'], errors='coerce', format='%Y-%m-%d')
         date2 = pd.to_datetime(csv_df['date'], errors='coerce', format='%d-%m-%Y')
         csv_df['date'] = date1.fillna(date2)
+        csv_df['libelle_banque'] = csv_df['libelle_banque'].str.strip()
 
 
     except:
