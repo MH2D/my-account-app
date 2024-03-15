@@ -124,7 +124,7 @@ def read_file_expenses(USERNAME):
 
         current_montant = df.iloc[st.session_state.index_df]["montant"]
         type_of_line = 'EXPENSE' if current_montant < 0 else 'RECETTE'
-
+        abs_montant = abs(current_montant)
         st.write(f'Current row: {st.session_state.index_df} over {len(df)}')
 
         spending_date = st.date_input("Date", value=df.iloc[st.session_state.index_df]["date"])
@@ -140,21 +140,21 @@ def read_file_expenses(USERNAME):
         else:
             selected_category = st.selectbox("Select Category", CATEGORIES['recettes'], key=f'catego_{st.session_state.index_df}')
         
-        amount = st.number_input("Amount", value=df.iloc[st.session_state.index_df]["montant"])
+        amount = st.number_input("Amount", value=abs_montant)
         st.write(st.session_state.index_df)
 
         col1, col2, col3 = st.columns([1,1,1])
         with col1:
             if st.button(f"Add {type_of_line} from csv", disabled=st.session_state['disabled']):
                 if type_of_line == 'EXPENSE':
-                    new_EXPENSE_exp_to_db(USERNAME, spending_date, description, selected_category, sub_category, amount, libelle=libelle)
+                    new_EXPENSE_exp_to_db(USERNAME, spending_date, description, selected_category, sub_category, amount, libelle=df.iloc[st.session_state.index_df]["description"])
                     st.success("Expense added successfully from csv!")
                     st.session_state.added_rows.append(st.session_state.index_df)
                     st.write(st.session_state.index_df) 
                     st.session_state.index_df = st.session_state.index_df + 1
 
                 else:
-                    new_RECETTE_exp_to_db(USERNAME, spending_date, description, selected_category, amount, libelle=libelle)
+                    new_RECETTE_exp_to_db(USERNAME, spending_date, description, selected_category, amount, libelle=df.iloc[st.session_state.index_df]["description"])
                     st.success("Recette added successfully from csv!")
                     st.session_state.added_rows.append(st.session_state.index_df)
                     st.write(st.session_state.index_df)
