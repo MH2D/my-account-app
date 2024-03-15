@@ -25,8 +25,10 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
         csv_df = pd.read_csv(BytesIO(content))
         date1 = pd.to_datetime(csv_df['date'], errors='coerce', format='%Y-%m-%d')
         date2 = pd.to_datetime(csv_df['date'], errors='coerce', format='%d-%m-%Y')
+        st.write(csv_df.head(10))
         csv_df['date'] = date1.fillna(date2)
-        
+
+
     except:
         if 'expenses' in csv_filename:
             cols = ['id', 'date', 'description', 'libelle_banque', 'category', 'sub_category', 'amount']
