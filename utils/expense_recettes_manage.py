@@ -6,6 +6,7 @@ from utils.global_utils import *
 
 def new_EXPENSE_exp_to_db(USERNAME, spending_date, description, category, sub_category, amount, libelle='Not mentioned'):
     expenses_df = read_csv_from_gcs(f'{USERNAME}_expenses.csv', bucket_name=BUCKET_NAME)
+
     new_id = expenses_df.id.max() + 1
     if np.isnan(new_id):
         new_id = 1
@@ -25,6 +26,8 @@ def new_EXPENSE_exp_to_db(USERNAME, spending_date, description, category, sub_ca
     
 def new_RECETTE_exp_to_db(USERNAME, spending_date, description, category, amount, libelle='Not mentioned'):
     recettes_df = read_csv_from_gcs(f'{USERNAME}_recettes.csv')
+    
+
     new_id = recettes_df.id.max() + 1
     if np.isnan(new_id):
         new_id = 1
@@ -186,18 +189,14 @@ def read_csv_input_and_filter(USERNAME, uploaded_file):
 
     df = df.sort_values('date')
 
-    csv_filename = f'{USERNAME}_expenses.csv'
-    exp = read_csv_from_gcs(csv_filename)
-    date1 = pd.to_datetime(exp['date'], errors='coerce', format='%Y-%m-%d')
-    date2 = pd.to_datetime(exp['date'], errors='coerce', format='%d-%m-%Y')
-    exp['date'] = date1.fillna(date2)
+    filt_df = df.copy()
+    for source in ['expenses', 'recettes']:
+        csv_filename = f'{USERNAME}_{source}.csv'
+        exp = read_csv_from_gcs(csv_filename)
+        merged_df = pd.merge(filt_df, exp, left_on=['montant', 'date', 'libelle'], right_on=['amount', 'date', 'libelle_banque'], how='left')
+        # Filter out rows where subset of df1's columns matches subset of df2's columns
+        filt_df = filt_df[~merged_df['libelle_banque'].notna()]
+        st.write(len(filt_df))
+    st.write(filt_df)
 
-    st.write(exp.tail(5))
-    st.write(df.tail(4))
-    merged_df = pd.merge(df, exp, left_on=['montant', 'date', 'libelle'], right_on=['amount', 'date', 'libelle_banque'], how='left')
-    st.write(merged_df.tail(10))
-    # Filter out rows where subset of df1's columns matches subset of df2's columns
-    filtered_df = df[~merged_df['libelle_banque'].notna()]
-    st.write(len(filtered_df))
-    st.write(filtered_df)
-    return df
+    return filt_df

@@ -23,6 +23,9 @@ def read_csv_from_gcs(csv_filename, bucket_name=BUCKET_NAME):
         # Read the CSV file directly into a DataFrame
         content = blob.download_as_string()
         csv_df = pd.read_csv(BytesIO(content))
+        date1 = pd.to_datetime(csv_df['date'], errors='coerce', format='%Y-%m-%d')
+        date2 = pd.to_datetime(csv_df['date'], errors='coerce', format='%d-%m-%Y')
+        csv_df['date'] = date1.fillna(date2)
         
     except:
         if 'expenses' in csv_filename:
